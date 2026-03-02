@@ -1,5 +1,5 @@
+import { Calendar, Clock, MapPin } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { MapPin, Clock, Calendar } from "lucide-react";
 
 interface EventCardProps {
   type: "Ceremony" | "Reception";
@@ -11,15 +11,25 @@ interface EventCardProps {
   delay?: string;
 }
 
-function EventCard({ type, time, date, venue, address, locationUrl, delay = "0s" }: EventCardProps) {
+function EventCard({
+  type,
+  time,
+  date,
+  venue,
+  address,
+  locationUrl,
+  delay = "0s",
+}: EventCardProps) {
   const isCeremony = type === "Ceremony";
 
   return (
     <div
       className={`reveal ${delay ? `reveal-delay-${delay}` : ""} relative p-8 lg:p-10 flex flex-col gap-6`}
       style={{
-        background: "linear-gradient(135deg, oklch(0.995 0.004 60 / 0.9), oklch(0.97 0.015 55 / 0.8))",
-        boxShadow: "0 4px 40px oklch(0.22 0.018 45 / 0.1), inset 0 0 0 1px oklch(0.72 0.1 65 / 0.25)",
+        background:
+          "linear-gradient(135deg, oklch(0.995 0.004 60 / 0.9), oklch(0.97 0.015 55 / 0.8))",
+        boxShadow:
+          "0 4px 40px oklch(0.22 0.018 45 / 0.1), inset 0 0 0 1px oklch(0.72 0.1 65 / 0.25)",
         backdropFilter: "blur(8px)",
         transitionDelay: delay,
       }}
@@ -35,27 +45,52 @@ function EventCard({ type, time, date, venue, address, locationUrl, delay = "0s"
         <div
           className="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4"
           style={{
-            background: "linear-gradient(135deg, oklch(0.78 0.07 65 / 0.2), oklch(0.62 0.09 50 / 0.15))",
+            background:
+              "linear-gradient(135deg, oklch(0.78 0.07 65 / 0.2), oklch(0.62 0.09 50 / 0.15))",
             border: "1px solid oklch(0.72 0.1 65 / 0.4)",
           }}
         >
           {isCeremony ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-gold">
-              <path d="M12 2L9 6H3L7.5 9.5L5.5 15L12 11.5L18.5 15L16.5 9.5L21 6H15L12 2Z" fill="currentColor" opacity="0.8" />
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className="text-gold"
+            >
+              <path
+                d="M12 2L9 6H3L7.5 9.5L5.5 15L12 11.5L18.5 15L16.5 9.5L21 6H15L12 2Z"
+                fill="currentColor"
+                opacity="0.8"
+              />
             </svg>
           ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-gold">
-              <path d="M12 3C12 3 5 7 5 14C5 17.866 8.134 21 12 21C15.866 21 19 17.866 19 14C19 7 12 3 12 3Z" stroke="currentColor" strokeWidth="1.5" fill="none" />
-              <path d="M12 14C13.104 14 14 13.104 14 12C14 10.896 13.104 10 12 10C10.896 10 10 10.896 10 12C10 13.104 10.896 14 12 14Z" fill="currentColor" />
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className="text-gold"
+            >
+              <path
+                d="M12 3C12 3 5 7 5 14C5 17.866 8.134 21 12 21C15.866 21 19 17.866 19 14C19 7 12 3 12 3Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                fill="none"
+              />
+              <path
+                d="M12 14C13.104 14 14 13.104 14 12C14 10.896 13.104 10 12 10C10.896 10 10 10.896 10 12C10 13.104 10.896 14 12 14Z"
+                fill="currentColor"
+              />
             </svg>
           )}
         </div>
         <p className="font-body text-xs tracking-[0.3em] uppercase text-gold/70 mb-1">
           {isCeremony ? "The" : "Join us for the"}
         </p>
-        <h3 className="font-display text-3xl text-charcoal">
-          {type}
-        </h3>
+        <h3 className="font-display text-3xl text-charcoal">{type}</h3>
       </div>
 
       {/* Divider */}
@@ -70,7 +105,9 @@ function EventCard({ type, time, date, venue, address, locationUrl, delay = "0s"
         <div className="flex items-start gap-3">
           <Clock size={16} className="text-gold/60 mt-0.5 shrink-0" />
           <div>
-            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">Time</p>
+            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">
+              Time
+            </p>
             <p className="font-elegant text-xl text-charcoal">{time}</p>
           </div>
         </div>
@@ -78,7 +115,9 @@ function EventCard({ type, time, date, venue, address, locationUrl, delay = "0s"
         <div className="flex items-start gap-3">
           <Calendar size={16} className="text-gold/60 mt-0.5 shrink-0" />
           <div>
-            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">Date</p>
+            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">
+              Date
+            </p>
             <p className="font-elegant text-xl text-charcoal">{date}</p>
           </div>
         </div>
@@ -86,7 +125,9 @@ function EventCard({ type, time, date, venue, address, locationUrl, delay = "0s"
         <div className="flex items-start gap-3">
           <MapPin size={16} className="text-gold/60 mt-0.5 shrink-0" />
           <div>
-            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">Venue</p>
+            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mb-0.5">
+              Venue
+            </p>
             {locationUrl ? (
               <a
                 href={locationUrl}
@@ -124,14 +165,16 @@ export function DetailsSection() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        for (const entry of entries) {
           if (entry.isIntersecting) {
             const reveals = entry.target.querySelectorAll(".reveal");
-            reveals.forEach((el) => { el.classList.add("is-visible"); });
+            for (const el of Array.from(reveals)) {
+              el.classList.add("is-visible");
+            }
           }
-        });
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -147,20 +190,23 @@ export function DetailsSection() {
       ref={sectionRef}
       className="py-24 lg:py-32 relative overflow-hidden"
       style={{
-        background: "linear-gradient(160deg, oklch(0.96 0.025 15) 0%, oklch(0.98 0.012 30) 50%, oklch(0.96 0.025 15) 100%)",
+        background:
+          "linear-gradient(160deg, oklch(0.96 0.025 15) 0%, oklch(0.98 0.012 30) 50%, oklch(0.96 0.025 15) 100%)",
       }}
     >
       {/* Background decorative elements */}
       <div
         className="absolute top-0 left-0 w-64 h-64 opacity-20"
         style={{
-          background: "radial-gradient(circle, oklch(0.72 0.1 65 / 0.3), transparent 70%)",
+          background:
+            "radial-gradient(circle, oklch(0.72 0.1 65 / 0.3), transparent 70%)",
         }}
       />
       <div
         className="absolute bottom-0 right-0 w-96 h-96 opacity-10"
         style={{
-          background: "radial-gradient(circle, oklch(0.72 0.1 65 / 0.4), transparent 70%)",
+          background:
+            "radial-gradient(circle, oklch(0.72 0.1 65 / 0.4), transparent 70%)",
         }}
       />
 
@@ -174,9 +220,23 @@ export function DetailsSection() {
             Reception Details
           </h2>
           <div className="ornament-divider">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-gold/70">
-              <path d="M12 2C12 2 10 6 6 6C6 6 10 8 12 12C14 8 18 6 18 6C14 6 12 2 12 2Z" fill="currentColor" />
-              <path d="M12 22C12 22 10 18 6 18C6 18 10 16 12 12C14 16 18 18 18 18C14 18 12 22 12 22Z" fill="currentColor" opacity="0.5" />
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className="text-gold/70"
+            >
+              <path
+                d="M12 2C12 2 10 6 6 6C6 6 10 8 12 12C14 8 18 6 18 6C14 6 12 2 12 2Z"
+                fill="currentColor"
+              />
+              <path
+                d="M12 22C12 22 10 18 6 18C6 18 10 16 12 12C14 16 18 18 18 18C14 18 12 22 12 22Z"
+                fill="currentColor"
+                opacity="0.5"
+              />
             </svg>
           </div>
         </div>

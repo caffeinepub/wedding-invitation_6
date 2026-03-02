@@ -9,70 +9,36 @@
 import { IDL } from '@icp-sdk/core/candid';
 
 export const Time = IDL.Int;
-export const RSVP = IDL.Record({
+export const GuestMessage = IDL.Record({
   'id' : IDL.Nat,
-  'mealPreference' : IDL.Text,
   'name' : IDL.Text,
   'submittedAt' : Time,
-  'email' : IDL.Text,
   'message' : IDL.Text,
-  'attending' : IDL.Bool,
 });
 
 export const idlService = IDL.Service({
-  'deleteRSVP' : IDL.Func([IDL.Nat], [], []),
-  'getAllRSVPs' : IDL.Func([], [IDL.Vec(RSVP)], ['query']),
-  'getRSVPCount' : IDL.Func(
-      [],
-      [
-        IDL.Record({
-          'total' : IDL.Nat,
-          'notAttending' : IDL.Nat,
-          'attending' : IDL.Nat,
-        }),
-      ],
-      ['query'],
-    ),
-  'submitRSVP' : IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Bool, IDL.Text, IDL.Text],
-      [IDL.Nat],
-      [],
-    ),
+  'deleteMessage' : IDL.Func([IDL.Nat], [], []),
+  'getAllMessages' : IDL.Func([], [IDL.Vec(GuestMessage)], ['query']),
+  'getMessageCount' : IDL.Func([], [IDL.Nat], ['query']),
+  'submitMessage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Nat], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
   const Time = IDL.Int;
-  const RSVP = IDL.Record({
+  const GuestMessage = IDL.Record({
     'id' : IDL.Nat,
-    'mealPreference' : IDL.Text,
     'name' : IDL.Text,
     'submittedAt' : Time,
-    'email' : IDL.Text,
     'message' : IDL.Text,
-    'attending' : IDL.Bool,
   });
   
   return IDL.Service({
-    'deleteRSVP' : IDL.Func([IDL.Nat], [], []),
-    'getAllRSVPs' : IDL.Func([], [IDL.Vec(RSVP)], ['query']),
-    'getRSVPCount' : IDL.Func(
-        [],
-        [
-          IDL.Record({
-            'total' : IDL.Nat,
-            'notAttending' : IDL.Nat,
-            'attending' : IDL.Nat,
-          }),
-        ],
-        ['query'],
-      ),
-    'submitRSVP' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Bool, IDL.Text, IDL.Text],
-        [IDL.Nat],
-        [],
-      ),
+    'deleteMessage' : IDL.Func([IDL.Nat], [], []),
+    'getAllMessages' : IDL.Func([], [IDL.Vec(GuestMessage)], ['query']),
+    'getMessageCount' : IDL.Func([], [IDL.Nat], ['query']),
+    'submitMessage' : IDL.Func([IDL.Text, IDL.Text], [IDL.Nat], []),
   });
 };
 

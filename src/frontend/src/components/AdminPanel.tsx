@@ -1,15 +1,3 @@
-import { useState } from "react";
-import { X, Trash2, Users, CheckCircle, XCircle, Loader2, AlertTriangle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,8 +9,23 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
-import { useGetAllRSVPs, useGetRSVPCount, useDeleteRSVP } from "@/hooks/useQueries";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  useDeleteMessage,
+  useGetAllMessages,
+  useGetMessageCount,
+} from "@/hooks/useQueries";
+import { AlertTriangle, Loader2, MessageSquare, Trash2, X } from "lucide-react";
+import { useState } from "react";
 
 const ADMIN_PASSCODE = "wedding2026";
 
@@ -63,7 +66,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
       style={{ background: "oklch(0.12 0.018 45 / 0.95)" }}
     >
       <div
-        className="relative w-full max-w-5xl max-h-[90vh] overflow-auto"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-auto"
         style={{
           background: "oklch(0.998 0.003 60)",
           boxShadow: "0 25px 80px oklch(0.1 0.02 45 / 0.5)",
@@ -77,7 +80,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
           <div>
             <h2 className="font-display text-2xl text-charcoal">Admin Panel</h2>
             <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mt-0.5">
-              Emily &amp; James · Wedding RSVP Management
+              Bhavana &amp; Ajay · Guest Messages
             </p>
           </div>
           <button
@@ -99,7 +102,7 @@ export function AdminPanel({ onClose }: AdminPanelProps) {
               onSubmit={handlePasscodeSubmit}
             />
           ) : (
-            <RSVPDashboard />
+            <MessagesDashboard />
           )}
         </div>
       </div>
@@ -114,26 +117,51 @@ interface PasscodeGateProps {
   onSubmit: (e: React.FormEvent) => void;
 }
 
-function PasscodeGate({ passcode, setPasscode, error, onSubmit }: PasscodeGateProps) {
+function PasscodeGate({
+  passcode,
+  setPasscode,
+  error,
+  onSubmit,
+}: PasscodeGateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 max-w-sm mx-auto">
       <div
         className="w-14 h-14 rounded-full flex items-center justify-center mb-6"
         style={{
-          background: "linear-gradient(135deg, oklch(0.78 0.07 65 / 0.15), oklch(0.62 0.09 50 / 0.1))",
+          background:
+            "linear-gradient(135deg, oklch(0.78 0.07 65 / 0.15), oklch(0.62 0.09 50 / 0.1))",
           border: "1px solid oklch(0.72 0.1 65 / 0.4)",
         }}
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-gold">
-          <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M8 11V7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7V11" stroke="currentColor" strokeWidth="1.5" />
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+          className="text-gold"
+        >
+          <rect
+            x="5"
+            y="11"
+            width="14"
+            height="10"
+            rx="2"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
+          <path
+            d="M8 11V7C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7V11"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          />
           <circle cx="12" cy="16" r="1.5" fill="currentColor" />
         </svg>
       </div>
 
       <h3 className="font-display text-2xl text-charcoal mb-2">Admin Access</h3>
       <p className="font-body text-sm text-charcoal/50 mb-8 text-center">
-        Enter the passcode to view RSVP submissions.
+        Enter the passcode to view guest messages.
       </p>
 
       <form onSubmit={onSubmit} className="w-full space-y-4">
@@ -152,7 +180,9 @@ function PasscodeGate({ passcode, setPasscode, error, onSubmit }: PasscodeGatePr
           {error && (
             <div className="flex items-center gap-2 text-destructive">
               <AlertTriangle size={14} />
-              <p className="font-body text-xs">Incorrect passcode. Please try again.</p>
+              <p className="font-body text-xs">
+                Incorrect passcode. Please try again.
+              </p>
             </div>
           )}
         </div>
@@ -161,7 +191,8 @@ function PasscodeGate({ passcode, setPasscode, error, onSubmit }: PasscodeGatePr
           type="submit"
           className="w-full rounded-none font-body text-xs tracking-[0.2em] uppercase py-5"
           style={{
-            background: "linear-gradient(135deg, oklch(0.45 0.08 35), oklch(0.38 0.07 40))",
+            background:
+              "linear-gradient(135deg, oklch(0.45 0.08 35), oklch(0.38 0.07 40))",
           }}
         >
           Enter
@@ -171,16 +202,16 @@ function PasscodeGate({ passcode, setPasscode, error, onSubmit }: PasscodeGatePr
   );
 }
 
-function RSVPDashboard() {
-  const { data: rsvps, isLoading, error } = useGetAllRSVPs();
-  const { data: counts } = useGetRSVPCount();
-  const deleteRSVP = useDeleteRSVP();
+function MessagesDashboard() {
+  const { data: messages, isLoading, error } = useGetAllMessages();
+  const { data: count } = useGetMessageCount();
+  const deleteMessage = useDeleteMessage();
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-24 gap-3 text-charcoal/40">
         <Loader2 size={20} className="animate-spin" />
-        <span className="font-body text-sm">Loading RSVPs...</span>
+        <span className="font-body text-sm">Loading messages...</span>
       </div>
     );
   }
@@ -188,47 +219,45 @@ function RSVPDashboard() {
   if (error) {
     return (
       <div className="text-center py-24 text-charcoal/50">
-        <p className="font-body text-sm">Failed to load RSVPs. Please try again.</p>
+        <p className="font-body text-sm">
+          Failed to load messages. Please try again.
+        </p>
       </div>
     );
   }
 
-  const totalRSVPs = Number(counts?.total ?? 0);
-  const attendingCount = Number(counts?.attending ?? 0);
-  const notAttendingCount = Number(counts?.notAttending ?? 0);
+  const totalMessages = Number(count ?? 0);
 
   return (
     <div className="space-y-8">
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: "Total RSVPs", value: totalRSVPs, icon: <Users size={18} />, color: "oklch(0.72 0.1 65)" },
-          { label: "Attending", value: attendingCount, icon: <CheckCircle size={18} />, color: "oklch(0.62 0.15 145)" },
-          { label: "Not Attending", value: notAttendingCount, icon: <XCircle size={18} />, color: "oklch(0.55 0.15 30)" },
-        ].map((stat) => (
+      <div className="flex justify-center">
+        <div
+          className="p-5 text-center min-w-[160px]"
+          style={{
+            background: "oklch(0.97 0.015 55)",
+            border: "1px solid oklch(0.88 0.02 50)",
+          }}
+        >
           <div
-            key={stat.label}
-            className="p-5 text-center"
-            style={{
-              background: "oklch(0.97 0.015 55)",
-              border: "1px solid oklch(0.88 0.02 50)",
-            }}
+            className="flex items-center justify-center gap-2 mb-2"
+            style={{ color: "oklch(0.72 0.1 65)" }}
           >
-            <div className="flex items-center justify-center gap-2 mb-2" style={{ color: stat.color }}>
-              {stat.icon}
-            </div>
-            <p className="font-display text-3xl text-charcoal">{stat.value}</p>
-            <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mt-1">
-              {stat.label}
-            </p>
+            <MessageSquare size={18} />
           </div>
-        ))}
+          <p className="font-display text-3xl text-charcoal">{totalMessages}</p>
+          <p className="font-body text-xs tracking-widest uppercase text-charcoal/40 mt-1">
+            Total Messages
+          </p>
+        </div>
       </div>
 
       {/* Table */}
-      {!rsvps || rsvps.length === 0 ? (
+      {!messages || messages.length === 0 ? (
         <div className="text-center py-16">
-          <p className="font-elegant italic text-charcoal/40 text-lg">No RSVPs yet. Check back soon!</p>
+          <p className="font-elegant italic text-charcoal/40 text-lg">
+            No messages yet. Check back soon!
+          </p>
         </div>
       ) : (
         <div
@@ -238,53 +267,34 @@ function RSVPDashboard() {
           <Table>
             <TableHeader>
               <TableRow style={{ background: "oklch(0.97 0.015 55)" }}>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Name</TableHead>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Email</TableHead>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Attending</TableHead>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Meal</TableHead>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Message</TableHead>
-                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">Submitted</TableHead>
+                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">
+                  Name
+                </TableHead>
+                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">
+                  Message
+                </TableHead>
+                <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50">
+                  Submitted
+                </TableHead>
                 <TableHead className="font-body text-xs tracking-widest uppercase text-charcoal/50 text-right">
                   Actions
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {rsvps.map((rsvp) => (
-                <TableRow key={String(rsvp.id)} className="hover:bg-ivory/50">
+              {messages.map((msg) => (
+                <TableRow key={String(msg.id)} className="hover:bg-ivory/50">
                   <TableCell className="font-elegant text-base text-charcoal whitespace-nowrap">
-                    {rsvp.name}
-                  </TableCell>
-                  <TableCell className="font-body text-sm text-charcoal/60 whitespace-nowrap">
-                    {rsvp.email}
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      className="rounded-none font-body text-xs tracking-wider uppercase"
-                      style={{
-                        background: rsvp.attending
-                          ? "oklch(0.62 0.15 145 / 0.15)"
-                          : "oklch(0.55 0.15 30 / 0.15)",
-                        color: rsvp.attending
-                          ? "oklch(0.42 0.12 145)"
-                          : "oklch(0.45 0.12 30)",
-                        border: `1px solid ${rsvp.attending ? "oklch(0.62 0.15 145 / 0.3)" : "oklch(0.55 0.15 30 / 0.3)"}`,
-                      }}
-                    >
-                      {rsvp.attending ? "Yes" : "No"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="font-body text-sm text-charcoal/60">
-                    {rsvp.mealPreference || "—"}
+                    {msg.name}
                   </TableCell>
                   <TableCell
-                    className="font-elegant text-sm text-charcoal/60 max-w-[200px] truncate"
-                    title={rsvp.message}
+                    className="font-elegant text-sm text-charcoal/70 max-w-[320px]"
+                    style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
                   >
-                    {rsvp.message || "—"}
+                    {msg.message}
                   </TableCell>
                   <TableCell className="font-body text-xs text-charcoal/40 whitespace-nowrap">
-                    {formatDate(rsvp.submittedAt)}
+                    {formatDate(msg.submittedAt)}
                   </TableCell>
                   <TableCell className="text-right">
                     <AlertDialog>
@@ -292,7 +302,7 @@ function RSVPDashboard() {
                         <button
                           type="button"
                           className="p-1.5 text-charcoal/30 hover:text-destructive transition-colors"
-                          aria-label={`Delete RSVP for ${rsvp.name}`}
+                          aria-label={`Delete message from ${msg.name}`}
                         >
                           <Trash2 size={15} />
                         </button>
@@ -300,11 +310,12 @@ function RSVPDashboard() {
                       <AlertDialogContent className="rounded-none font-body">
                         <AlertDialogHeader>
                           <AlertDialogTitle className="font-display text-xl text-charcoal">
-                            Delete RSVP?
+                            Delete Message?
                           </AlertDialogTitle>
                           <AlertDialogDescription className="font-elegant text-base text-charcoal/60">
-                            This will permanently remove the RSVP from{" "}
-                            <strong>{rsvp.name}</strong>. This action cannot be undone.
+                            This will permanently remove the message from{" "}
+                            <strong>{msg.name}</strong>. This action cannot be
+                            undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -313,7 +324,7 @@ function RSVPDashboard() {
                           </AlertDialogCancel>
                           <AlertDialogAction
                             className="rounded-none font-body text-xs tracking-wider uppercase bg-destructive hover:bg-destructive/90"
-                            onClick={() => deleteRSVP.mutate(rsvp.id)}
+                            onClick={() => deleteMessage.mutate(msg.id)}
                           >
                             Delete
                           </AlertDialogAction>

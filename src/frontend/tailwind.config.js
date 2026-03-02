@@ -84,9 +84,9 @@ export default {
         navy: "oklch(var(--navy))",
       },
       fontFamily: {
-        display: ["'Playfair Display'", "Georgia", "serif"],
-        elegant: ["'Cormorant Garamond'", "Georgia", "serif"],
-        body: ["'Jost'", "system-ui", "sans-serif"],
+        display: ["'Fraunces'", "Georgia", "serif"],
+        elegant: ["'Instrument Serif'", "Georgia", "serif"],
+        body: ["'Crimson Pro'", "Georgia", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

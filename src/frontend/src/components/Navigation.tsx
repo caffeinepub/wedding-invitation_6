@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface NavigationProps {
   onAdminClick: () => void;
@@ -29,7 +29,7 @@ export function Navigation({ onAdminClick }: NavigationProps) {
     { label: "Our Story", id: "story" },
     { label: "Details", id: "details" },
     { label: "Gallery", id: "gallery" },
-    { label: "RSVP", id: "rsvp" },
+    { label: "Messages", id: "messages" },
   ];
 
   return (

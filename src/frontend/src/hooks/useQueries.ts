@@ -1,71 +1,65 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { GuestMessage } from "../backend.d";
 import { useActor } from "./useActor";
-import type { RSVP } from "../backend.d";
 
-export function useGetAllRSVPs() {
+export function useGetAllMessages() {
   const { actor, isFetching } = useActor();
-  return useQuery<RSVP[]>({
-    queryKey: ["rsvps"],
+  return useQuery<GuestMessage[]>({
+    queryKey: ["messages"],
     queryFn: async () => {
       if (!actor) return [];
-      return actor.getAllRSVPs();
+      return actor.getAllMessages();
     },
     enabled: !!actor && !isFetching,
   });
 }
 
-export function useGetRSVPCount() {
+export function useGetMessageCount() {
   const { actor, isFetching } = useActor();
-  return useQuery<{ total: bigint; attending: bigint; notAttending: bigint }>({
-    queryKey: ["rsvpCount"],
+  return useQuery<bigint>({
+    queryKey: ["messageCount"],
     queryFn: async () => {
-      if (!actor) return { total: 0n, attending: 0n, notAttending: 0n };
-      return actor.getRSVPCount();
+      if (!actor) return 0n;
+      return actor.getMessageCount();
     },
     enabled: !!actor && !isFetching,
   });
 }
 
-export function useSubmitRSVP() {
+export function useSubmitMessage() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
       name,
-      email,
-      attending,
-      mealPreference,
       message,
     }: {
       name: string;
-      email: string;
-      attending: boolean;
-      mealPreference: string;
       message: string;
     }) => {
       if (!actor) throw new Error("Not connected");
-      return actor.submitRSVP(name, email, attending, mealPreference, message);
+      return actor.submitMessage(name, message);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rsvps"] });
-      queryClient.invalidateQueries({ queryKey: ["rsvpCount"] });
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["messageCount"] });
     },
   });
 }
 
-export function useDeleteRSVP() {
+export function useDeleteMessage() {
   const { actor } = useActor();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id: bigint) => {
       if (!actor) throw new Error("Not connected");
-      return actor.deleteRSVP(id);
+      return actor.deleteMessage(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["rsvps"] });
-      queryClient.invalidateQueries({ queryKey: ["rsvpCount"] });
+      queryClient.invalidateQueries({ queryKey: ["messages"] });
+      queryClient.invalidateQueries({ queryKey: ["messageCount"] });
     },
   });
 }

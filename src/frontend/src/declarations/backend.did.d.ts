@@ -10,24 +10,18 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface RSVP {
+export interface GuestMessage {
   'id' : bigint,
-  'mealPreference' : string,
   'name' : string,
   'submittedAt' : Time,
-  'email' : string,
   'message' : string,
-  'attending' : boolean,
 }
 export type Time = bigint;
 export interface _SERVICE {
-  'deleteRSVP' : ActorMethod<[bigint], undefined>,
-  'getAllRSVPs' : ActorMethod<[], Array<RSVP>>,
-  'getRSVPCount' : ActorMethod<
-    [],
-    { 'total' : bigint, 'notAttending' : bigint, 'attending' : bigint }
-  >,
-  'submitRSVP' : ActorMethod<[string, string, boolean, string, string], bigint>,
+  'deleteMessage' : ActorMethod<[bigint], undefined>,
+  'getAllMessages' : ActorMethod<[], Array<GuestMessage>>,
+  'getMessageCount' : ActorMethod<[], bigint>,
+  'submitMessage' : ActorMethod<[string, string], bigint>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

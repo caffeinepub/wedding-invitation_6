@@ -89,85 +89,74 @@ export class ExternalBlob {
         return this;
     }
 }
-export interface RSVP {
+export interface GuestMessage {
     id: bigint;
-    mealPreference: string;
     name: string;
     submittedAt: Time;
-    email: string;
     message: string;
-    attending: boolean;
 }
 export type Time = bigint;
 export interface backendInterface {
-    deleteRSVP(id: bigint): Promise<void>;
-    getAllRSVPs(): Promise<Array<RSVP>>;
-    getRSVPCount(): Promise<{
-        total: bigint;
-        notAttending: bigint;
-        attending: bigint;
-    }>;
-    submitRSVP(name: string, email: string, attending: boolean, mealPreference: string, message: string): Promise<bigint>;
+    deleteMessage(id: bigint): Promise<void>;
+    getAllMessages(): Promise<Array<GuestMessage>>;
+    getMessageCount(): Promise<bigint>;
+    submitMessage(name: string, message: string): Promise<bigint>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async deleteRSVP(arg0: bigint): Promise<void> {
+    async deleteMessage(arg0: bigint): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.deleteRSVP(arg0);
+                const result = await this.actor.deleteMessage(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.deleteRSVP(arg0);
+            const result = await this.actor.deleteMessage(arg0);
             return result;
         }
     }
-    async getAllRSVPs(): Promise<Array<RSVP>> {
+    async getAllMessages(): Promise<Array<GuestMessage>> {
         if (this.processError) {
             try {
-                const result = await this.actor.getAllRSVPs();
+                const result = await this.actor.getAllMessages();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getAllRSVPs();
+            const result = await this.actor.getAllMessages();
             return result;
         }
     }
-    async getRSVPCount(): Promise<{
-        total: bigint;
-        notAttending: bigint;
-        attending: bigint;
-    }> {
+    async getMessageCount(): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.getRSVPCount();
+                const result = await this.actor.getMessageCount();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getRSVPCount();
+            const result = await this.actor.getMessageCount();
             return result;
         }
     }
-    async submitRSVP(arg0: string, arg1: string, arg2: boolean, arg3: string, arg4: string): Promise<bigint> {
+    async submitMessage(arg0: string, arg1: string): Promise<bigint> {
         if (this.processError) {
             try {
-                const result = await this.actor.submitRSVP(arg0, arg1, arg2, arg3, arg4);
+                const result = await this.actor.submitMessage(arg0, arg1);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.submitRSVP(arg0, arg1, arg2, arg3, arg4);
+            const result = await this.actor.submitMessage(arg0, arg1);
             return result;
         }
     }

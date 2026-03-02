@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import { Navigation } from "./components/Navigation";
-import { HeroSection } from "./components/HeroSection";
-import { StorySection } from "./components/StorySection";
-import { DetailsSection } from "./components/DetailsSection";
-import { GallerySection } from "./components/GallerySection";
-import { RSVPSection } from "./components/RSVPSection";
-import { Footer } from "./components/Footer";
-import { AdminPanel } from "./components/AdminPanel";
 import { Toaster } from "@/components/ui/sonner";
+import { useEffect, useState } from "react";
+import { AdminPanel } from "./components/AdminPanel";
+import { DetailsSection } from "./components/DetailsSection";
+import { Footer } from "./components/Footer";
+import { GallerySection } from "./components/GallerySection";
+import { HeroSection } from "./components/HeroSection";
+import { MessagesSection } from "./components/MessagesSection";
+import { Navigation } from "./components/Navigation";
+import { StorySection } from "./components/StorySection";
 
 export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
@@ -39,14 +39,12 @@ export default function App() {
         <StorySection />
         <DetailsSection />
         <GallerySection />
-        <RSVPSection />
+        <MessagesSection />
       </main>
 
       <Footer />
 
-      {showAdmin && (
-        <AdminPanel onClose={() => setShowAdmin(false)} />
-      )}
+      {showAdmin && <AdminPanel onClose={() => setShowAdmin(false)} />}
 
       <Toaster />
     </>

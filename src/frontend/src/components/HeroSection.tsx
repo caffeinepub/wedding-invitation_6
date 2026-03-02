@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const WEDDING_DATE = new Date("2026-03-25T19:00:00");
 
@@ -27,11 +27,6 @@ export function HeroSection() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  const scrollToRSVP = () => {
-    const el = document.getElementById("rsvp");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <section
@@ -89,15 +84,19 @@ export function HeroSection() {
           className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-9xl text-white mb-4 leading-none tracking-wide animate-fade-in-up"
           style={{ animationDelay: "0.2s", opacity: 0 }}
         >
-          Bhavana <span className="font-elegant italic text-gold-light text-5xl sm:text-6xl md:text-7xl lg:text-8xl">&amp;</span> Ajay
+          Bhavana{" "}
+          <span className="font-elegant italic text-gold-light text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
+            &amp;
+          </span>{" "}
+          Ajay
         </h1>
 
         {/* Tagline */}
         <p
-          className="font-elegant italic text-xl sm:text-2xl text-white/80 tracking-widest mb-2 animate-fade-in-up"
+          className="font-elegant italic text-base sm:text-lg text-white/80 tracking-widest mb-2 animate-fade-in-up"
           style={{ animationDelay: "0.4s", opacity: 0 }}
         >
-          Together Forever
+          She is the chaos and he is the meaning, who chose the chaos.
         </p>
 
         {/* Divider */}
@@ -142,20 +141,6 @@ export function HeroSection() {
               </span>
             </div>
           ))}
-        </div>
-
-        {/* CTA */}
-        <div
-          className="animate-fade-in-up"
-          style={{ animationDelay: "0.9s", opacity: 0 }}
-        >
-          <button
-            type="button"
-            onClick={scrollToRSVP}
-            className="font-body text-sm tracking-[0.25em] uppercase px-10 py-4 border border-gold/60 text-white bg-gold/10 hover:bg-gold/25 hover:border-gold transition-all duration-300 backdrop-blur-sm"
-          >
-            RSVP Now
-          </button>
         </div>
       </div>
 
