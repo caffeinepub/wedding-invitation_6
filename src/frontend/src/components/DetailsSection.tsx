@@ -245,7 +245,7 @@ export function DetailsSection() {
         <div className="max-w-xl mx-auto">
           <EventCard
             type="Reception"
-            time="7:00 PM"
+            time="6:00 PM"
             date="March 25, 2026"
             venue="Parthasarathy Damodar Party Hall"
             address="376, Rajaji Nagar Main Rd, 1st Block, Nagapura, Bengaluru, Karnataka 560010"

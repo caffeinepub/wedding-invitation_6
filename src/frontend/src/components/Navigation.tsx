@@ -28,7 +28,6 @@ export function Navigation({ onAdminClick }: NavigationProps) {
   const navLinks = [
     { label: "Our Story", id: "story" },
     { label: "Details", id: "details" },
-    { label: "Gallery", id: "gallery" },
     { label: "Messages", id: "messages" },
   ];
 

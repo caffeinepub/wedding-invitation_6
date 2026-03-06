@@ -3,28 +3,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const galleryImages = [
   {
-    src: "/assets/generated/gallery-1.dim_800x600.jpg",
-    alt: "Emily and James at the university library where they first met",
+    src: "/assets/uploads/DSC08244-1.JPG",
+    alt: "Bhavana and Ajay together",
   },
   {
-    src: "/assets/generated/gallery-2.dim_800x600.jpg",
-    alt: "First date at the cozy coffee house on Elm Street",
+    src: "/assets/uploads/DSC08177-2.JPG",
+    alt: "Bhavana and Ajay sharing a moment",
   },
   {
-    src: "/assets/generated/gallery-3.dim_800x600.jpg",
-    alt: "A romantic afternoon walk through the botanical garden",
+    src: "/assets/uploads/DSC08135-2-3.JPG",
+    alt: "Bhavana and Ajay at a vintage car",
   },
   {
-    src: "/assets/generated/gallery-4.dim_800x600.jpg",
-    alt: "Engagement photoshoot in the golden evening light",
-  },
-  {
-    src: "/assets/generated/gallery-5.dim_800x600.jpg",
-    alt: "Celebrating with family and friends after the proposal",
-  },
-  {
-    src: "/assets/generated/gallery-6.dim_800x600.jpg",
-    alt: "A candid moment of laughter and joy together",
+    src: "/assets/uploads/DSC07985-2-4.JPG",
+    alt: "Bhavana and Ajay in traditional attire",
   },
 ];
 

@@ -96,7 +96,7 @@ export function HeroSection() {
           className="font-elegant italic text-base sm:text-lg text-white/80 tracking-widest mb-2 animate-fade-in-up"
           style={{ animationDelay: "0.4s", opacity: 0 }}
         >
-          She is the chaos and he is the meaning, who chose the chaos.
+          Together forever
         </p>
 
         {/* Divider */}

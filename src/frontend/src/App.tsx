@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { AdminPanel } from "./components/AdminPanel";
 import { DetailsSection } from "./components/DetailsSection";
 import { Footer } from "./components/Footer";
-import { GallerySection } from "./components/GallerySection";
 import { HeroSection } from "./components/HeroSection";
 import { MessagesSection } from "./components/MessagesSection";
 import { Navigation } from "./components/Navigation";
@@ -38,7 +37,6 @@ export default function App() {
         <HeroSection />
         <StorySection />
         <DetailsSection />
-        <GallerySection />
         <MessagesSection />
       </main>
 
